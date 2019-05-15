@@ -8,16 +8,10 @@ namespace SameBrightnessSharp
 {
 	class Program
 	{
-		static void Main(string[] args)
+		static void Main()
 		{
 			BrightnessMonitor monitor = new BrightnessMonitor();
-
-			monitor.brightnessChanged += (newBrightness) => {
-				Console.WriteLine("Brightness changed to " + newBrightness);
-			};
-
 			monitor.StartMonitor();
-
 
 		}
 
