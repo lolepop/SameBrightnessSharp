@@ -4,69 +4,44 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Management;
 
 namespace SameBrightnessSharp
 {
 	class BrightnessMonitor
 	{
-		public int Delay { get; set; }
-
-		private string currentInstance;
+		private readonly string currentInstance;
 		private int prevBrightness, prevState;
-		private bool isRunning;
 
 		public delegate void BrightnessChangedCallback(int newBrightness);
 		public event BrightnessChangedCallback BrightnessChanged;
 
-		public BrightnessMonitor(int checkDelay = 1000)
+		public BrightnessMonitor()
 		{
 			currentInstance = WMITool.GetDisplayInstance();
 
 			prevBrightness = WMITool.GetBrightness();
 			prevState = WMITool.GetBatteryState();
 
-			Delay = checkDelay;
-
 		}
 
-		public void Tick(bool changed)
+		public void BrightnessTick(int currBrightness)
 		{
-			if (changed)
+			int currState = WMITool.GetBatteryState();
+
+			if (currState != prevState)
 			{
 				WMITool.SetBrightness(currentInstance, prevBrightness);
 				BrightnessChanged?.Invoke(prevBrightness);
 			}
 
-			prevBrightness = WMITool.GetBrightness();
-
+			prevState = currState;
+			prevBrightness = currBrightness;
 		}
 
-		public void StartMonitor() // probably will change in the future
+		public void StartMonitor()
 		{
-			isRunning = true;
-
-			while (isRunning)
-			{
-				Tick(WMITool.GetBatteryState() != prevState);
-				prevState = WMITool.GetBatteryState();
-
-				Thread.Sleep(Delay);
-			}
-
+			WMITool.BrightnessChanged((object sender, EventArrivedEventArgs e) => BrightnessTick(int.Parse(e.NewEvent.Properties["Brightness"].Value.ToString())));
 		}
-
-		public void StopMonitor() => isRunning = false;
-
-		public void StartSvcTicker() // only keeps track of previous brightness (for service)
-		{
-			while (true)
-			{
-				Tick(false);
-
-				Thread.Sleep(Delay);
-			}	
-		}
-
-
 	}
 }

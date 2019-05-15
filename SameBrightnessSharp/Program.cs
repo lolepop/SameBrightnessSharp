@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SameBrightnessSharp
 {
@@ -12,8 +13,8 @@ namespace SameBrightnessSharp
 		{
 			BrightnessMonitor monitor = new BrightnessMonitor();
 			monitor.StartMonitor();
-
+			Thread.Sleep(Timeout.Infinite);
+			
 		}
-
 	}
 }

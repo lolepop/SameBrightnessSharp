@@ -9,6 +9,26 @@ namespace SameBrightnessSharp
 {
 	class WMITool
 	{
+		public static void BrightnessChanged(EventArrivedEventHandler eventArrivedEventHandler)
+		{
+			try
+			{
+				WqlEventQuery query = new WqlEventQuery(
+					"SELECT * FROM WmiMonitorBrightnessEvent");
+
+				ManagementEventWatcher watcher = new ManagementEventWatcher(new ManagementScope("root\\WMI"), query);
+
+				watcher.EventArrived += eventArrivedEventHandler;
+
+				watcher.Start();
+				return;
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+			}
+		}
+
 		public static int GetBrightness() // current brightness should range from 0 to 100
 		{
 			try
@@ -42,7 +62,7 @@ namespace SameBrightnessSharp
 			return null;
 		}
 
-		public static void SetBrightness(string instance, int brightness) // brightness is uint8 in wmi but eh (should range from 0 to 100 anyway)
+		public static void SetBrightness(string instance, int brightness)
 		{
 			try
 			{

@@ -75,13 +75,10 @@ namespace SameBrightnessService
 			}
 			else
 			{
-				BrightnessSvc svc = new BrightnessSvc();
-				svc.CanHandlePowerEvent = true;
-
 				ServiceBase[] ServicesToRun;
 				ServicesToRun = new ServiceBase[]
 				{
-					svc
+					new BrightnessSvc()
 				};
 				ServiceBase.Run(ServicesToRun);
 			}

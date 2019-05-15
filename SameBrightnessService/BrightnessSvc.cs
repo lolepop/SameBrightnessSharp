@@ -22,31 +22,27 @@ namespace SameBrightnessService
 		}
 
 		BrightnessMonitor monitor = new BrightnessMonitor();
+		Thread procThread;
 
 		protected override void OnStart(string[] args)
 		{
-			new Thread(() => {
+			procThread = new Thread(() => {
 				WriteLog("Service started");
 
 				monitor.BrightnessChanged += (newBrightness) => {
 					WriteLog("Brightness changed to " + newBrightness.ToString());
 				};
 
-				monitor.StartSvcTicker();
+				monitor.StartMonitor();
 
-			}).Start();
+				Thread.Sleep(Timeout.Infinite);
 
+			});
+
+			procThread.Start();
 		}
 
-		protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
-		{
-			WriteLog(powerStatus.ToString("g"));
-			
-			monitor.Tick(powerStatus == PowerBroadcastStatus.PowerStatusChange);
-
-			return base.OnPowerEvent(powerStatus);
-		}
-
+		[Conditional("DEBUG")]
 		public void WriteLog(string msg)
 		{
 			string dir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "log");
