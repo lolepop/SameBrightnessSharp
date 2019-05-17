@@ -12,9 +12,18 @@ I prefer to use the service as it's easier to have manual control over. However,
 
 This file has no interface (you have to use task manager to manually close the process) and can be run without installation but I suggest that you place it in your startup directory.
 
+### Manual method
+
 1. Find your startup folder. (Easiest way is to open windows explorer, click on the top bar and type in ```shell:startup```)
 2. Place ```SameBrightnessSharp.exe``` into the folder.
 3. Start the program manually or restart your computer.
+
+### Automated
+
+1. Open command prompt as admin
+2. Navigate to the folder with the application with ```cd <directory path>```
+3. Install the application into the startup directory with ```SameBrightnessSharp.exe install```
+4. The application should automatically configure and start itself
 
 ## Service version (requires admin to install)
 
@@ -23,7 +32,8 @@ This file has no interface (you have to use task manager to manually close the p
 3. Install the service with ```SameBrightnessService.exe install```
 4. The service should automatically configure and start itself
 
-# Usage (SameBrightnessService CLI)
+# Usage
+## SameBrightnessService CLI
 	SameBrightnessService.exe command
 
 - ```install```
@@ -31,3 +41,15 @@ This file has no interface (you have to use task manager to manually close the p
 
 - ```uninstall```
 	- Uninstalls the service automatically. (You have to close the process manually if uninstallation doesn't stop it)
+
+## SameBrightnessSharp.exe CLI
+	SameBrightnessSharp.exe command
+
+-	```install```
+	- Installs program into startup directory and starts it
+-	```uninstall``` 
+	- Uninstalls program from startup directory
+-	```stop```
+	- Kills process
+-	```start```
+	- Starts process

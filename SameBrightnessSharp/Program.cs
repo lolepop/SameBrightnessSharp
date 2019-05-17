@@ -68,7 +68,7 @@ namespace SameBrightnessSharp
 						break;
 					default:
 						MessageBox.Show("install - Installs program into startup directory and starts it\n"
-										 + "uninstall - Uninstalls programs from startup directory\n"
+										 + "uninstall - Uninstalls program from startup directory\n"
 										 + "stop - Kills process\n"
 										 + "start - Starts process\n\n"
 										 + "Example usage: SameBrightnessSharp.exe install", "Help");
